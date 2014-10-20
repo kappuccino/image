@@ -1,0 +1,13 @@
+{
+	"require": {
+	},
+
+	"autoload": {
+		"psr-4": {
+			"Sephora\\" : "src/Sephora/src/"
+		}
+	},
+
+	"require-dev": {
+	}
+}

@@ -1,0 +1,49 @@
+<div id="selector" ng-controller="BrowserSelectorCtrl" class="hide">
+    <div class="header">
+        Déplacer <span ng-if="selection">vers : {{selection}}</span>
+    </div>
+
+    <div class="pick">
+        <browser-folder selection="selection"></browser-folder>
+    </div>
+
+    <div class="footer">
+        <button ng-click="hide()">Annuler</button>
+        <button ng-if="selection" ng-click="confirm()">Valider</button>
+    </div>
+</div>
+
+<hr>
+
+<div id="browser" class="container" ng-controller="BrowserListCtrl">
+
+    <div class="action">
+        <button class="btn btn-default" ng-click="mkdir()">Ajouter un dossier</button>
+        <button class="btn btn-default" ng-if="selection.length > 0" ng-click="move()">Déplacer</button>
+    </div>
+
+    <sephora-path url="{{folder}}"></sephora-path>
+
+    <table class="table big-list">
+        <tr>
+            <th width="1%"></th>
+            <th>Dossier</th>
+            <th width="30%">Infos</th>
+            <th width="30%">Droit</th>
+            <th width="5%"></th>
+        </tr>
+        <tr ng-repeat="item in items" class="line">
+            <td><input type="checkbox" checklist-model="selection" checklist-value="item.url"></td>
+            <td>
+                <a ui-sref="browser({ folder: item.url })" ng-if="item.isFolder">{{ item.url | basename }}</a>
+                <a href="/data/{{ item.url }}" target="_blank" ng-if="item.isFile">{{ item.url | basename }}</a>
+            </td>
+            <td><input class="form-control" ng-model="item.info" ng-enter="save(item)"></td>
+            <td><input class="form-control" ng-model="item.droit" ng-enter="save(item)"></td>
+        </tr>
+    </table>
+
+    <pre>{{selection}}</pre>
+    <pre>{{items}}</pre>
+
+</div>

@@ -1,0 +1,6 @@
+<div id="pathway">
+    <a ui-sref="browser({folder:''})">Home</a>
+    <span ng-repeat="path in paths">
+       / <a ui-sref="browser({folder: path.path})">{{path.name}}</a>
+    </span>
+</div>
