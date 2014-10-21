@@ -6,7 +6,7 @@ Browser.controller('BrowserListCtrl', function (
 
 	//if($state.current.name != 'film') return;
 
-	$scope.folder = $stateParams.folder || '';
+	$scope.folder = $stateParams.folder || '';
 	$scope.items = [];
 
 	loadView();

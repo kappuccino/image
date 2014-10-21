@@ -86,7 +86,7 @@ class Browser{
 	}
 
 	public function mkdir($url){
-		$url = $this->item.'/'.$url;
+		$url = $this->root.'/'.$this->getItem(false).'/'.$url;
 
 		if(file_exists($url)) throw new Exception('Already exists');
 
