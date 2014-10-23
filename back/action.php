@@ -39,7 +39,14 @@
 			$e = new \Sephora\Browser($e);
 			if($e->move($post['dst'])) $out[] = ['url' => $e->getItem(false)];
 		}
+	}else
+
+	if($_GET['remove']){
 		$out = [];
+		foreach($post['items'] as $url){
+			$e = new \Sephora\Browser($url);
+			$e->remove();
+		}
 	}
 
 

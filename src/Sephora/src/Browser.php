@@ -79,6 +79,7 @@ class Browser{
 		$me = [
 			'isFile' => true,
 			'url'    => str_replace($this->root, '', $url),
+			'dir'    => $url,
 			'size'   => filesize($url)
 		];
 
@@ -86,7 +87,11 @@ class Browser{
 	}
 
 	public function mkdir($url){
-		$url = $this->root.'/'.$this->getItem(false).'/'.$url;
+
+		$path = $this->root.'/'.$this->getItem(false);
+		if(substr($path, -1) == '/') $path = substr($path, 0, -1);
+
+		$url  = $path.'/'.$url;
 
 		if(file_exists($url)) throw new Exception('Already exists');
 
@@ -113,6 +118,24 @@ class Browser{
 		# Meta
 		#echo $meta.' > '.$to;
 		if(file_exists($meta)) rename($meta, $metaTo);
+
+		return true;
+	}
+
+	public function remove(){
+
+		$item = $this->getItem();
+
+	#	echo "Remove: ".$item."<br>";
+
+		if(!file_exists($item)) return false;
+
+		if(is_file($item)){
+			$this->removeFile($item);
+		}else
+		if(is_dir($item)){
+			$this->removeFolder($item);
+		}
 
 		return true;
 	}
@@ -201,6 +224,46 @@ class Browser{
 		chdir($myPWD);
 
 		return $myContent;
+	}
+
+	private function removeFile($url){
+		if(file_exists($url))           unlink($url);
+		if(file_exists($url.'.json'))   unlink($url.'.json');
+
+		return true;
+	}
+
+	private function removeFolder($url){
+
+		// Supprimer tous les fichiers
+		$contents = $this->read($url) ?: [];
+		foreach($contents as $e){
+			if($e['isFile']) unlink($e['dir']);
+		}
+
+		// Supprimer iterativement tous les dossiers
+		if(is_dir($url)) {
+			$this->removeFolderLoop($url);
+			rmdir($url);
+		}
+	}
+
+	private function removeFolderLoop($url){
+
+		$contents = $this->read($url, NULL, 'FLAT') ?: [];
+		$contents = array_map(function($e){
+			if($e['isFolder']) return $e['dir'];
+		}, $contents);
+
+		if(!empty($contents)){
+			foreach($contents as $e){
+				if($e['isFolder']){
+					$this->removeFolderLoop($e);
+					rmdir($e);
+				}
+			}
+		}
+
 	}
 
 }

@@ -1,4 +1,8 @@
-var sephoraApp = angular.module('sephoraApp', ['ui.router', 'Browser']);
+var sephoraApp = angular.module('sephoraApp', [
+	'ui.router',
+	'blueimp.fileupload',
+	'Browser'
+]);
 
 // http://scotch.io/tutorials/javascript/angular-routing-using-ui-router
 sephoraApp.config(function($stateProvider, $urlRouterProvider) {
@@ -17,7 +21,6 @@ sephoraApp.config(function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise('/home');
 
 });
-
 
 sephoraApp.filter('basename', function() {
 	return function(input) {

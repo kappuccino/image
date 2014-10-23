@@ -13,13 +13,12 @@
     </div>
 </div>
 
-<hr>
-
 <div id="browser" class="container" ng-controller="BrowserListCtrl">
 
     <div class="action">
         <button class="btn btn-default" ng-click="mkdir()">Ajouter un dossier</button>
         <button class="btn btn-default" ng-if="selection.length > 0" ng-click="move()">Déplacer</button>
+        <button class="btn btn-default" ng-if="selection.length > 0" ng-click="remove()">Supprimer</button>
     </div>
 
     <sephora-path url="{{folder}}"></sephora-path>
@@ -43,7 +42,11 @@
         </tr>
     </table>
 
-    <pre>{{selection}}</pre>
-    <pre>{{items}}</pre>
+     <pre>{{items}}</pre>
 
 </div>
+
+<div ui-view="form">
+
+</div>
+

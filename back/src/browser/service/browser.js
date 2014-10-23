@@ -7,24 +7,31 @@
 Browser.factory('BrowserService', function($resource) {
 
 	return $resource('action.php', {folder: '@dfolder'}, {
-		query: {
+
+		'query': {
 			params: {'content' : true},
 			method:'POST',
 			isArray: true
 		},
 
-		save: {
+		'save': {
 			params: {'save' : true},
 			method: 'POST'
 		},
 
-		mkdir: {
+		'mkdir': {
 			params: {'mkdir' : true},
 			method: 'POST'
 		},
 
-		move: {
+		'move': {
 			params: {'move' : true},
+			method: 'POST',
+			isArray: true
+		},
+
+		'remove': {
+			params: {'remove' : true},
 			method: 'POST',
 			isArray: true
 		}

@@ -7,6 +7,9 @@ Browser.config(function ($stateProvider, $urlRouterProvider) {
 			views: {
 				main: {
 					templateUrl: 'src/browser/partials/index.html'
+				},
+				'form@browser': {
+					templateUrl: 'src/browser/partials/upload-form.html'
 				}
 			}
 		})
