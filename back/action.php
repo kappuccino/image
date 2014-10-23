@@ -11,16 +11,9 @@
 
 
 	if($_GET['content']){
-		$Browser = new Sephora\Browser($post['folder'] ? '/'.$post['folder'] : '');
+		$Browser = new Sephora\Browser($post['folder']);
 		$Browser->readFolder();
-		$content = $Browser->getContent();
-
-		if($content){
-			$out = array_map(function($a){
-				$a['url'] = substr($a['url'], 1);
-				return $a;
-			}, $content);
-		}
+		$out = $Browser->getContent();
 	}else
 
 	if($_GET['save']){
@@ -37,7 +30,7 @@
 		$out = [];
 		foreach($post['src'] as $e){
 			$e = new \Sephora\Browser($e);
-			if($e->move($post['dst'])) $out[] = ['url' => $e->getItem(false)];
+			$e->move($post['dst']);
 		}
 	}else
 

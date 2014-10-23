@@ -29,7 +29,8 @@ class Browser{
 
 	public function readFolder($folder=NULL){
 		$dir = $folder ?: $this->item;
-		$content = $this->read($this->root.$dir, NULL, 'FLAT_NOHIDDEN');
+		if(strpos($dir, $this->root) === false) $dir = $this->root.$dir;
+		$content = $this->read($dir, NULL, 'FLAT_NOHIDDEN');
 		if($content) $this->content = $content;
 	}
 
@@ -66,7 +67,7 @@ class Browser{
 
 		$me = [
 			'isFolder' => true,
-			'url'      => str_replace($this->root, '', $url),
+			'url'      => str_replace($this->root.'/', '', $url),
 			'dir'      => $url
 		];
 
@@ -78,7 +79,7 @@ class Browser{
 
 		$me = [
 			'isFile' => true,
-			'url'    => str_replace($this->root, '', $url),
+			'url'    => str_replace($this->root.'/', '', $url),
 			'dir'    => $url,
 			'size'   => filesize($url)
 		];

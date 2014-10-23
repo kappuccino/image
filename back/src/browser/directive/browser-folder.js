@@ -11,6 +11,10 @@ Browser.directive('browserFolder', function(){
 
 		controller: function($scope, $element, $compile, BrowserService) {
 
+			if(!$scope.folder) return;
+
+			console.log('!', $scope.folder)
+
 			BrowserService.query({folder: $scope.folder}, function(data){
 				$scope.items = data;
 			});

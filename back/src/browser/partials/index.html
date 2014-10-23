@@ -26,7 +26,7 @@
     <table class="table big-list">
         <tr>
             <th width="1%"></th>
-            <th>Dossier</th>
+            <th>Nom</th>
             <th width="30%">Infos</th>
             <th width="30%">Droit</th>
             <th width="5%"></th>
@@ -34,14 +34,21 @@
         <tr ng-repeat="item in items" class="line">
             <td><input type="checkbox" checklist-model="selection" checklist-value="item.url"></td>
             <td>
-                <a ui-sref="browser({ folder: item.url })" ng-if="item.isFolder">{{ item.url | basename }}</a>
-                <a href="/data/{{ item.url }}" target="_blank" ng-if="item.isFile">{{ item.url | basename }}</a>
+                <div ng-if="item.isFolder">
+                    <i class="fa fa-folder"></i>
+                    <a ui-sref="browser({ folder: item.url })">{{ item.url | basename }}</a>
+                </div>
+                <div ng-if="item.isFile">
+                    <i class="fa fa-file"></i>
+                    <a href="/data/{{ item.url }}" target="_blank" ng-if="item.isFile">{{ item.url | basename }}</a>
+                </div>
             </td>
             <td><input class="form-control" ng-model="item.info" ng-enter="save(item)"></td>
             <td><input class="form-control" ng-model="item.droit" ng-enter="save(item)"></td>
         </tr>
     </table>
 
+     <pre>{{selection}}</pre>
      <pre>{{items}}</pre>
 
 </div>

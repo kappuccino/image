@@ -4,14 +4,14 @@ Browser.controller('BrowserListCtrl', function (
 	BrowserService
 ){
 
-	//if($state.current.name != 'film') return;
+	if($state.current.name != 'browser') return;
 
 	$scope.folder = $stateParams.folder || '';
 	$scope.items = [];
 
-	loadView();
-
 	function loadView(){
+
+		if($scope.folder)
 		$scope.selection = [];
 
 		$scope.$emit('browser.folder', '');
@@ -22,18 +22,21 @@ Browser.controller('BrowserListCtrl', function (
 		});
 	}
 
+	loadView();
+
 	$rootScope.$on('uploader.done', function(evt, d){
-		var data = {
-			isFile: true,
-			url: $scope.folder + d.name,
-			size: d.size
-		}
+
+		var dir = $scope.folder ? $scope.folder+'/' : '/'
+			, data = {
+					isFile: true,
+					url: dir + d.name,
+					size: d.size
+				};
 
 		console.log(data, d)
 
 		$scope.items.push(data)
 	});
-
 
 	$scope.save = function(me) {
 
@@ -64,9 +67,9 @@ Browser.controller('BrowserListCtrl', function (
 		});
 	};
 
-	$scope.remove = function(selection){
+	$scope.remove = function(){
 
-		selection = selection || $scope.selection;
+		var selection = $scope.selection;
 
 		if(confirm("Confirmez vous la suppression de ces elements ?")) {
 
@@ -82,6 +85,8 @@ Browser.controller('BrowserListCtrl', function (
 					}
 				}
 			});
+
+			$scope.selection = [];
 		}
 
 	};
