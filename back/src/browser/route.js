@@ -14,4 +14,5 @@ Browser.config(function ($stateProvider, $urlRouterProvider) {
 			}
 		})
 
+
 })

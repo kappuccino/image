@@ -6,29 +6,26 @@ Browser.directive('browserFolder', function(){
 
 		scope: {
 			folder: '@',
-			selection: '='
+			selection: '=',
+			home: '@'
 		},
 
 		controller: function($scope, $element, $compile, BrowserService) {
 
-			if(!$scope.folder) return;
+			//if(!$scope.folder) return;
 
-			console.log('!', $scope.folder)
+			if($scope.home == 'yes') $scope.folder = '@';
 
-			BrowserService.query({folder: $scope.folder}, function(data){
+			//console.log('!', $scope.folder)
+
+			BrowserService.query({folder: $scope.folder}, function (data) {
 				$scope.items = data;
 			});
 
-			$scope.sel = function(evt, url){
-				var item = evt.target;
-
-				if(item.classList.contains('selected')) {
-					$scope.selection = '';
-				}else{
-					$scope.selection = url;
-				}
-
-			}
+			$scope.sel = function(evt, item){
+				var target = evt.target;
+				$scope.selection = (target.classList.contains('selected')) ? '' : item.url;
+			};
 
 			$scope.$watch('selection', function(n, o){
 				var prevSel = document.querySelector('.dirName.selected')

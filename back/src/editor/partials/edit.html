@@ -1,0 +1,29 @@
+<div class="container" id="editor" ng-controller="EditorCtrl">
+
+    <div class="row action">
+        <button class="btn btn-default" ng-click="save()">Enregistrer</button>
+        <button class="btn btn-default" ng-click="back()">Revenir</button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <p>MarkDown</p>
+            <textarea ng-model="file.content" rows="10" class="form-control"></textarea>
+        </div>
+        <div class="col-md-6">
+            <p>Résultat</p>
+            <!-- https://github.com/btford/angular-markdown-directive -->
+            <btf-markdown btf-markdown="file.content"></btf-markdown>
+        </div>
+    </div>
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <pre>{{file}}</pre>
+
+</div>

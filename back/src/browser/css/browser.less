@@ -12,6 +12,7 @@
 	vertical-align: middle;
 }
 
+@selector-color: #5bc0de;
 
 #selector{
 	position: absolute;
@@ -19,7 +20,9 @@
 	width: 600px;
 	top: 100px; bottom: 100px;
 	transform: translateX(-50%);
-	background: deepskyblue;
+	background: #FFF;
+	z-index: 500;
+	border: 1px solid @selector-color;
 
 	&.hide{
 		display: none;
@@ -27,11 +30,13 @@
 
 	.header{
 		padding: 10px;
-		background: deeppink;
+		background: @selector-color;
+		font-weight: bold;
+		text-align: center;
 	}
 
 	.pick{
-		background: orangered;
+		background: #FFF;
 		overflow-x: scroll;
 		position: absolute;
 		top: 45px; bottom: 50px;
@@ -39,7 +44,7 @@
 	}
 
 	.footer{
-		background: deeppink;
+		background: @selector-color;
 		text-align: center;
 		padding: 10px;
 		position: absolute;
@@ -61,6 +66,7 @@
 	}
 
 	li{
+		position: relative;
 		list-style-type: none;
 		padding: 0;
 		margin: 0;
@@ -84,9 +90,49 @@
 
 	.dirName{
 		cursor: pointer;
+		display: block;
+		position: absolute;
+		top: 0; right: 0; left: 15px;
+		padding-left: 5px;
+
 		&.selected{
 			background: purple;
 			color: white;
+		}
+	}
+
+}
+
+
+// La barre de progression pour l'uplad
+#main-progress{
+	margin-top: 10px;
+}
+
+.custom-menu{
+	z-index: 1000;
+	position: fixed;
+	border-radius: 3px;
+	border: 1px solid #404040;
+	padding: 5px 0 5px 0;
+	background: #f1f1f1;
+	display: none;
+
+	&.open{
+		display: block;
+	}
+
+	a{
+		min-width: 100px;
+		display: block;
+		color: #404040;
+		padding: 5px;
+		margin-bottom: 1px;
+		cursor: pointer;
+
+		&:hover{
+			background: #404040;
+			color: #f1f1f1;
 		}
 	}
 

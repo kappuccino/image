@@ -23,6 +23,14 @@ class Browser{
 		return ($root) ? $this->item : str_replace($this->root.'/', '', $this->item);
 	}
 
+	public function isFolder(){
+		return is_dir($this->getItem());
+	}
+
+	public function isFile(){
+		return is_file($this->getItem());
+	}
+
 	public function getContent(){
 		return $this->content;
 	}
@@ -75,13 +83,17 @@ class Browser{
 	}
 
 	public function file($url=NULL){
+
 		$url = $url ?: $this->item;
+		$ext = pathinfo($url, PATHINFO_EXTENSION);
+
 
 		$me = [
-			'isFile' => true,
-			'url'    => str_replace($this->root.'/', '', $url),
-			'dir'    => $url,
-			'size'   => filesize($url)
+			'isFile'     => true,
+			'isEditable' => in_array($ext, ['txt']),
+			'url'        => str_replace($this->root . '/', '', $url),
+			'dir'        => $url,
+			'size'       => filesize($url)
 		];
 
 		return array_merge($me, $this->getMeta($url));
@@ -103,14 +115,16 @@ class Browser{
 
 	public function move($to){
 
-		$to = $this->root.'/'.$to.'/'.basename($this->item);
+		$dst = $this->root.'/';
+		if(!empty($to)) $dst .= (substr($to, -1) == '/') ? $to : $to.'/';
+		$to = $dst . basename($this->item);
 
 		$meta = $this->item.'.json';
 		$metaTo = $to.'.json';
 
-		if($this->item == $to) return false;
-		if(file_exists($to)) return false;
-		if(file_exists($metaTo)) return false;
+	#	echo $this->getItem().' >>> '.$to;
+
+		if($this->item == $to OR file_exists($to) OR file_exists($metaTo)) return false;
 
 		# Item
 		#echo $this->item.' > '.$to.PHP_EOL;
@@ -140,6 +154,31 @@ class Browser{
 
 		return true;
 	}
+
+	public function rename($newname){
+
+		$final = dirname($this->getItem()).'/'.$newname;
+		if(file_exists($final)) return false;
+
+		if(rename($this->getItem(), $final)){
+			$this->item = $final;
+		}
+	}
+
+	public function markdown($url){
+
+		$path = $this->root.'/'.$this->getItem(false);
+		if(substr($path, -1) == '/') $path = substr($path, 0, -1);
+
+		$url  = $path.'/'.$url;
+
+		if(file_exists($url)) throw new Exception('Already exists');
+
+		file_put_contents($url, '');
+
+		return $this->file($url);
+	}
+
 
 // HELPERS /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

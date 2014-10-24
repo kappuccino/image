@@ -34,6 +34,16 @@ Browser.factory('BrowserService', function($resource) {
 			params: {'remove' : true},
 			method: 'POST',
 			isArray: true
+		},
+
+		'rename': {
+			params: {'rename' : true},
+			method: 'POST'
+		},
+
+		'markdown': {
+			params: {'markdown' : true},
+			method: 'POST'
 		}
 
 	});

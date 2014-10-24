@@ -1,7 +1,7 @@
 Browser.controller('BrowserListCtrl', function (
 	$scope, $rootScope, $state, $stateParams, $filter,
 	localStorageService,
-	BrowserService
+	BrowserService, ContextMenuService
 ){
 
 	if($state.current.name != 'browser') return;
@@ -11,7 +11,6 @@ Browser.controller('BrowserListCtrl', function (
 
 	function loadView(){
 
-		if($scope.folder)
 		$scope.selection = [];
 
 		$scope.$emit('browser.folder', '');
@@ -24,9 +23,10 @@ Browser.controller('BrowserListCtrl', function (
 
 	loadView();
 
+	// Quand une instance d'upload a terminé
 	$rootScope.$on('uploader.done', function(evt, d){
 
-		var dir = $scope.folder ? $scope.folder+'/' : '/'
+		var dir = $scope.folder ? $scope.folder+'/' : ''
 			, data = {
 					isFile: true,
 					url: dir + d.name,
@@ -69,24 +69,25 @@ Browser.controller('BrowserListCtrl', function (
 
 	$scope.remove = function(){
 
-		var selection = $scope.selection;
 
 		if(confirm("Confirmez vous la suppression de ces elements ?")) {
 
 			var item = new BrowserService({
 				folder: $scope.folder,
-				items: selection
+				items: $scope.selection
 			});
 
 			item.$remove(function(){
-				for(var i=0; i<selection.length; i++){
-					for(var j=0; j<$scope.items.length; j++){
-						if(selection[i] == $scope.items[j]['url']) $scope.items.splice(j,1);
+				console.log($scope.selection)
+				for(var sel=0; sel<$scope.selection.length; sel++){
+					for(var i=0; i<$scope.items.length; i++){
+						if($scope.selection[sel] == $scope.items[i]['url']) $scope.items.splice(i, 1);
 					}
 				}
+
+				$scope.selection = [];
 			});
 
-			$scope.selection = [];
 		}
 
 	};
@@ -94,9 +95,9 @@ Browser.controller('BrowserListCtrl', function (
 	$scope.mkdir = function(){
 		var dir = prompt("Nouveau dossier")
 			, item = new BrowserService({
-				folder: $scope.folder,
-				dir: dir
-			});
+					folder: $scope.folder,
+					dir: dir
+				});
 
 		if(!dir) return false;
 
@@ -105,4 +106,57 @@ Browser.controller('BrowserListCtrl', function (
 		});
 	};
 
+	$scope.newTxt = function(){
+		var file = prompt("Nouveau fichier texte")
+			, item = new BrowserService({
+					folder: $scope.folder,
+					file: file
+				});
+
+		if(!file) return false;
+
+		item.$markdown(function (data){
+			$scope.items.push(data);
+		});
+
+	}
+
+	$scope.rename = function(me){
+
+		var item = new BrowserService({
+					folder: $scope.folder,
+					item: me.url,
+					newname: me.newname
+				});
+
+		if(!me.newname || me.newname == $filter('basename')(me.url)) return false;
+
+		item.$rename(function(data){
+			me.url = data.url;
+			me.dir = data.dir;
+
+			delete me.renaming;
+			delete me.newname;
+
+			console.log(data)
+		});
+	};
+
+	$scope.menuRename = function(){
+		var item = ContextMenuService.data;
+		item.newname  = $filter('basename')(item.url);
+		item.renaming = true;
+	}
+
+	$scope.menuIsEditable = function(){
+		var item = ContextMenuService.data;
+		return item ? item.isEditable : false;
+	}
+
+	$scope.menuGetItemUrl = function(){
+		var item = ContextMenuService.data;
+		return item.url;
+	}
+
 });
+

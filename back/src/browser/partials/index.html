@@ -4,21 +4,37 @@
     </div>
 
     <div class="pick">
-        <browser-folder selection="selection"></browser-folder>
+        <browser-folder selection="selection" home="yes"</browser-folder>
     </div>
 
     <div class="footer">
-        <button ng-click="hide()">Annuler</button>
-        <button ng-if="selection" ng-click="confirm()">Valider</button>
+        <button class="btn" ng-click="hide()">Annuler</button>
+        <button class="btn" ng-if="selection" ng-click="confirm()">Valider</button>
     </div>
 </div>
 
 <div id="browser" class="container" ng-controller="BrowserListCtrl">
 
     <div class="action">
-        <button class="btn btn-default" ng-click="mkdir()">Ajouter un dossier</button>
-        <button class="btn btn-default" ng-if="selection.length > 0" ng-click="move()">Déplacer</button>
-        <button class="btn btn-default" ng-if="selection.length > 0" ng-click="remove()">Supprimer</button>
+        <button class="btn btn-default" ng-click="mkdir()">
+            <i class="fa fa-folder"></i>
+            Ajouter un dossier
+        </button>
+
+        <button class="btn btn-default" ng-click="newTxt()">
+            <i class="fa fa-file-text"></i>
+            Nouveau fichier texte
+        </button>
+
+        <button class="btn btn-default" ng-if="selection.length > 0" ng-click="move()">
+            <i class="fa fa-code-fork"></i>
+            Déplacer
+        </button>
+
+        <button class="btn btn-default btn-danger" ng-if="selection.length > 0" ng-click="remove()">
+            <i class="fa fa-trash"></i>
+            Supprimer
+        </button>
     </div>
 
     <sephora-path url="{{folder}}"></sephora-path>
@@ -29,19 +45,25 @@
             <th>Nom</th>
             <th width="30%">Infos</th>
             <th width="30%">Droit</th>
-            <th width="5%"></th>
         </tr>
         <tr ng-repeat="item in items" class="line">
             <td><input type="checkbox" checklist-model="selection" checklist-value="item.url"></td>
-            <td>
-                <div ng-if="item.isFolder">
+            <td _context-menu context-menu-data="item" data-target="menu-item">
+                <div ng-if="item.isFolder && !item.renaming">
                     <i class="fa fa-folder"></i>
                     <a ui-sref="browser({ folder: item.url })">{{ item.url | basename }}</a>
                 </div>
-                <div ng-if="item.isFile">
+                <div ng-if="item.isFile && !item.renaming">
                     <i class="fa fa-file"></i>
                     <a href="/data/{{ item.url }}" target="_blank" ng-if="item.isFile">{{ item.url | basename }}</a>
                 </div>
+
+                <input type="text"
+                       ng-model="item.newname"
+                       ng-if="item.renaming"
+                       ng-enter="rename(item)"
+                       focus-me="item.renaming"
+                       class="form-control">
             </td>
             <td><input class="form-control" ng-model="item.info" ng-enter="save(item)"></td>
             <td><input class="form-control" ng-model="item.droit" ng-enter="save(item)"></td>
@@ -51,9 +73,13 @@
      <pre>{{selection}}</pre>
      <pre>{{items}}</pre>
 
-</div>
+    <div ui-view="form"></div>
 
-<div ui-view="form">
+    <div id="menu-item" class="custom-menu">
+        <a ng-click="menuRename()">Renommer</a>
+        <a ui-sref="editor({file: menuGetItemUrl()})" ng-if="menuIsEditable()">Editer</a>
+    </div>
+
 
 </div>
 

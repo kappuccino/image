@@ -5887,17 +5887,21 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   top: 100px;
   bottom: 100px;
   transform: translateX(-50%);
-  background: deepskyblue;
+  background: #FFF;
+  z-index: 500;
+  border: 1px solid #5bc0de;
 }
 #selector.hide {
   display: none;
 }
 #selector .header {
   padding: 10px;
-  background: deeppink;
+  background: #5bc0de;
+  font-weight: bold;
+  text-align: center;
 }
 #selector .pick {
-  background: orangered;
+  background: #FFF;
   overflow-x: scroll;
   position: absolute;
   top: 45px;
@@ -5906,7 +5910,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   right: 0;
 }
 #selector .footer {
-  background: deeppink;
+  background: #5bc0de;
   text-align: center;
   padding: 10px;
   position: absolute;
@@ -5925,6 +5929,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   padding: 0;
 }
 #selector li {
+  position: relative;
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -5946,9 +5951,45 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 }
 #selector .dirName {
   cursor: pointer;
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 15px;
+  padding-left: 5px;
 }
 #selector .dirName.selected {
   background: purple;
   color: white;
+}
+#main-progress {
+  margin-top: 10px;
+}
+.custom-menu {
+  z-index: 1000;
+  position: fixed;
+  border-radius: 3px;
+  border: 1px solid #404040;
+  padding: 5px 0 5px 0;
+  background: #f1f1f1;
+  display: none;
+}
+.custom-menu.open {
+  display: block;
+}
+.custom-menu a {
+  min-width: 100px;
+  display: block;
+  color: #404040;
+  padding: 5px;
+  margin-bottom: 1px;
+  cursor: pointer;
+}
+.custom-menu a:hover {
+  background: #404040;
+  color: #f1f1f1;
+}
+#editor .action {
+  margin-bottom: 30px;
 }
 /*# sourceMappingURL=style.css.map */

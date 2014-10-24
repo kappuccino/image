@@ -1,7 +1,7 @@
 var sephoraApp = angular.module('sephoraApp', [
 	'ui.router',
-	'blueimp.fileupload',
-	'Browser'
+	'blueimp.fileupload', 'ng-context-menu', 'btford.markdown',
+	'Browser', 'Editor'
 ]);
 
 // http://scotch.io/tutorials/javascript/angular-routing-using-ui-router
@@ -47,3 +47,45 @@ sephoraApp.directive('ngEnter', function () {
 		});
 	};
 });
+
+
+// http://stackoverflow.com/questions/14833326/how-to-set-focus-on-input-field
+sephoraApp.directive('focusMe', function($timeout, $parse) {
+	return {
+		//scope: true,   // optionally create a child scope
+		link: function(scope, element, attrs) {
+			var model = $parse(attrs.focusMe);
+			scope.$watch(model, function(value) {
+				//console.log('value=',value);
+				if(value === true) {
+					$timeout(function() {
+						element[0].focus();
+					});
+				}
+			});
+
+			// to address @blesh's comment, set attribute value to 'false'
+			// on blur event:
+			element.bind('blur', function() {
+				//console.log('blur');
+				scope.$apply(model.assign(scope, false));
+			});
+		}
+	};
+});
+
+
+/*
+
+
+Element.prototype.remove = function() {
+	this.parentElement.removeChild(this);
+}
+
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+	for(var i = 0, len = this.length; i < len; i++) {
+		if(this[i] && this[i].parentElement) {
+			this[i].parentElement.removeChild(this[i]);
+		}
+	}
+}*/

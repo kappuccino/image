@@ -1,0 +1,3 @@
+[submodule "bower_components/ng-context-menu"]
+	path = bower_components/ng-context-menu
+	url = git@github.com:kappuccino/ng-context-menu.git

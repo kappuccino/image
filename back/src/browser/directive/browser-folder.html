@@ -1,14 +1,10 @@
-<!--
-<p>selection = {{selection}}</p>
--->
-
 <ul>
     <li ng-repeat="item in items" ng-if="item.isFolder">
-        <a ng-click="toggle($event)" url="{{item.url}}">
+        <a ng-click="toggle($event)" url="{{item.url}}" ng-class="{root: item.isRoot}">
             <i class="fa fa-folder"></i>
             <i class="fa fa-folder-open"></i>
         </a>
-        <span ng-click="sel($event, item.url)" class="dirName">{{item.url | basename}}</span>
+        <span ng-click="sel($event, item)" class="dirName">{{item.name || item.url | basename}}</span>
         <span class="child"></span>
     </li>
 </ul>

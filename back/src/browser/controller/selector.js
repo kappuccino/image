@@ -5,6 +5,7 @@ Browser.controller('BrowserSelectorCtrl', function($scope, $rootScope){
 	$scope.selection = '';
 
 	$rootScope.$on('selector.open', function(){
+		$scope.selection = '';
 		$scope.show()
 	});
 
