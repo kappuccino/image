@@ -31,6 +31,10 @@ class Browser{
 		return is_file($this->getItem());
 	}
 
+	public function exists(){
+		return file_exists($this->getItem());
+	}
+
 	public function getContent(){
 		return $this->content;
 	}
@@ -179,6 +183,24 @@ class Browser{
 		return $this->file($url);
 	}
 
+	public function filterFolder(){
+
+		$content = array_filter($this->getContent(), function($e){
+			return $e['isFolder'];
+		});
+
+		$this->content = $content;
+	}
+
+	public function exclude($items){
+
+		$content = array_filter($this->getContent(), function($e) use ($items){
+		#	echo '-'.basename($e['url']).'<br>';
+			return !in_array(basename($e['url']), $items);
+		});
+
+		$this->content = $content;
+	}
 
 // HELPERS /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
